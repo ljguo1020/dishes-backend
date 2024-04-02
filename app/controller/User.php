@@ -7,6 +7,7 @@ use app\Request;
 
 use app\utils\JWTUtils;
 use app\utils\Result;
+use think\facade\Db;
 
 class User extends BaseController {
 
@@ -17,20 +18,16 @@ class User extends BaseController {
         $username = $request->param('username');
         $password = $request->param('password');
 
-
-
-
-        $user = UserModel::where('username', $username)->select();
+        $user = UserModel::where('username', $username)->find();
         if(!$user) {
-            return Result::fail('not found user!');
+            return Result::fail('not found account!');
         }
-
         // 2. 验证密码
 
         $user = UserModel::where([
             'username' => ['eq', $username],
             'password' => ['eq', $password]
-        ])->select();
+        ])->find();
 
         if(!$user) {
             return Result::fail('password error!');
@@ -38,19 +35,31 @@ class User extends BaseController {
 
         // 3. 验证用户状态
 
+        if(!$user->status) {
+            return Result::fail('account is disable!');
+        }
 
         // 4. 组装 jwt token
 
-        
-        return 
+        dump(Db::query("select * from user where status=:id", ['id' => 1]));
+
+        $data = [
+            'username' => $user->username,
+            'password' => $user->password
+        ];
+
+        $jwt_token = JWTUtils::encode($data);
+
+
+        return Result::success(data:$jwt_token);
 
     }
 
     public function get($id) {
-        if($id) {
-            return UserModel::select();
+        if(!$id) {
+            return UserModel::selectAll();
         } else {
-            return UserModel::where('id', $id)->select();
+            return UserModel::selectById($id);
         }
     }
 }

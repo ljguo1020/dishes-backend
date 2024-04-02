@@ -5,12 +5,9 @@ namespace app\middleware;
 
 
 use app\utils\Result;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use app\utils\JWTUtils;
+use DomainException;
 use Firebase\JWT\ExpiredException;
-
-
-
 
 /**
  * 登录权限校验
@@ -24,7 +21,7 @@ class Auth
      * @param \Closure       $next
      * @return Response
      */
-    public function handle($request, \Closure $next)
+    public function handle($request, \Closure $next, $role)
     {
         $jwt_token = $request->header('Authorization');
 
@@ -34,11 +31,12 @@ class Auth
         }
 
         // 检验 token 合法性
-
-
-
-        $request->token = $jwt_token;
-            
+        try {
+            $payload = JWTUtils::decode($jwt_token);
+        } catch (\Exception $e) {
+            return Result::send(401, 'Jwt: ' . $e->getMessage());
+        }
+        
         return $next($request);
 
 

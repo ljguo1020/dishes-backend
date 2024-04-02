@@ -9,16 +9,24 @@ use app\utils\Result;
 
 class JWTUtils {
 
-    private static $key = 'ljguo1020';
-    private static $sign = 'HS256';
+    private static $key = 'HS256';
+    private static $sign = 'ljguo1020';
 
     public static function decode($token) {
-        try {
-            $decoded = JWT::decode($token, new Key(static::$key, static::$sign));
-        } catch(ExpiredException $e) {
+        $decoded = JWT::decode($token, new Key(static::$sign, static::$key));
+        return $decoded;
+        /**
+         * catch(ExpiredException $e) {
             return Result::send(401, 'Expired token!');
         } 
+         */
+    }
 
+
+    public static function encode($payload) {
+        $payload['exp'] = time() + (2 * 60);
+        $jwt_token = JWT::encode($payload, static::$sign, static::$key);
+        return $jwt_token;
     }
 
 

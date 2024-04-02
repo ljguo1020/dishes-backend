@@ -14,9 +14,11 @@ use think\facade\Route;
 Route::group('', function () {
     Route::get('index', 'index');
     Route::get('user/get/[:id]', 'user/get');
-})->middleware('auth');
+})->middleware('auth', 'admin');
 
-
+Route::group('', function() {
+    Route::post('login', 'user/login');
+});
 
 
 

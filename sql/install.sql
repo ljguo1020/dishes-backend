@@ -1,3 +1,6 @@
+set character set utf8;
+
+
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS user_info;
 DROP TABLE IF EXISTS user;
@@ -27,8 +30,8 @@ CREATE TABLE user_info (
     user_id INT,
     phone VARCHAR(20),
     email VARCHAR(255),
-    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    create_time TIMESTAMP,
+    update_time TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -59,3 +62,5 @@ CREATE TABLE permission (
 INSERT INTO permission (permission_name, permission_desc) VALUES ('user:read', '读取权限，允许用户查看内容');
 INSERT INTO permission (permission_name, permission_desc) VALUES ('user:create', '写入权限，允许用户编辑内容');
 INSERT INTO permission (permission_name, permission_desc) VALUES ('user:delete', '删除权限，允许用户删除内容');
+
+
