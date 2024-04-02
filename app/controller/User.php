@@ -29,6 +29,7 @@ class User extends BaseController {
             'password' => ['eq', $password]
         ])->find();
 
+        
         if(!$user) {
             return Result::fail('password error!');
         }
@@ -40,8 +41,6 @@ class User extends BaseController {
         }
 
         // 4. 组装 jwt token
-
-        dump(Db::query("select * from user where status=:id", ['id' => 1]));
 
         $data = [
             'username' => $user->username,
@@ -56,10 +55,10 @@ class User extends BaseController {
     }
 
     public function get($id) {
-        if(!$id) {
-            return UserModel::selectAll();
-        } else {
-            return UserModel::selectById($id);
-        }
+        return UserModel::selectById($id);
+    }
+
+    public function getAll() {
+        return UserModel::selectAll();
     }
 }

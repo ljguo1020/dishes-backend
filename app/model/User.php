@@ -11,6 +11,6 @@ class User extends Model {
     }
 
     public static function selectAll() {
-        return self::find();
+        return self::select();
     }
 }

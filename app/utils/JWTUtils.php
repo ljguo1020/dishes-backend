@@ -15,16 +15,11 @@ class JWTUtils {
     public static function decode($token) {
         $decoded = JWT::decode($token, new Key(static::$sign, static::$key));
         return $decoded;
-        /**
-         * catch(ExpiredException $e) {
-            return Result::send(401, 'Expired token!');
-        } 
-         */
     }
 
 
     public static function encode($payload) {
-        $payload['exp'] = time() + (2 * 60);
+        $payload['exp'] = time() + (10 * 60);
         $jwt_token = JWT::encode($payload, static::$sign, static::$key);
         return $jwt_token;
     }
