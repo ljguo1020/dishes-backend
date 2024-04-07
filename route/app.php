@@ -17,9 +17,10 @@ Route::group('user', function () {
 })->middleware('auth', 'admin');
 
 
-Route::group('', function() {
+Route::group(function() {
     Route::post('login', 'user/login');
-    
+    Route::post('register', 'user/register');
+    Route::get('getcode', 'user/getcode');
 });
 
 

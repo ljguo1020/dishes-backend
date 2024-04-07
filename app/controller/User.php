@@ -20,10 +20,16 @@ class User extends BaseController
         return $this->userService->login();
     }
 
-    public function register() {
-        
+    public function register()
+    {
+        return $this->userService->register();
     }
 
+
+    public function getCode()
+    {
+        return $this->userService->getCode();
+    }
     public function get($id)
     {
         return $this->userService->get($id);
