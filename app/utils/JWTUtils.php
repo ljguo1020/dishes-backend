@@ -4,8 +4,6 @@ namespace app\utils;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Firebase\JWT\ExpiredException;
-use app\utils\Result;
 
 class JWTUtils {
 
@@ -19,14 +17,10 @@ class JWTUtils {
 
 
     public static function encode($payload) {
-        $payload['exp'] = time() + (10 * 60);
+        $payload['exp'] = time() + (7 * 24 * 60 * 60); // 7 天过期时间
+        $payload['iat'] = time();
         $jwt_token = JWT::encode($payload, static::$sign, static::$key);
         return $jwt_token;
     }
-
-
-
-
-
 
 }

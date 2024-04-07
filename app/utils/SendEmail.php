@@ -41,7 +41,7 @@ class SendEmail {
         $this->mail->isHTML(true);  // 设置邮件内容为 HTML 格式
     }
 
-    public function send(string $to, EmailTemplate $tpl, \Closure $closure) {
+    public function send(string $to, EmailTemplate $tpl, \Closure $message) {
         // 收件人设置
         $this->mail->addAddress($to, '');
    
@@ -51,7 +51,7 @@ class SendEmail {
         $this->mail->Subject = '《欣语心愿》';
 
         // 回调函数处理内容
-        $message = $closure();
+        $message = $message();
 
         // 内容
         $this->mail->Body = str_replace('{{ message }}', $message, $contnet);

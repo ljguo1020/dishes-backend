@@ -6,8 +6,7 @@ namespace app\middleware;
 
 use app\utils\Result;
 use app\utils\JWTUtils;
-use DomainException;
-use Firebase\JWT\ExpiredException;
+use think\facade\Db;
 
 /**
  * 登录权限校验
@@ -21,7 +20,7 @@ class Auth
      * @param \Closure       $next
      * @return Response
      */
-    public function handle($request, \Closure $next, $role)
+    public function handle($request, \Closure $next, $role, $permissions)
     {
         $jwt_token = $request->header('Authorization');
 
@@ -33,6 +32,20 @@ class Auth
         // 检验 token 合法性
         try {
             $payload = JWTUtils::decode($jwt_token);
+
+
+            // 校验权限
+
+            $role_name = Db::query('select role_name from role where id = :id', ['id' => $payload->{'role_id'}])[0]['role_name'];
+
+            // 拿到
+
+            if(!in_array($role_name, $role)) {
+                return Result::send(401, 'Role mismatch!');
+            }
+            
+            
+
         } catch (\Exception $e) {
             return Result::send(401, 'Jwt: ' . $e->getMessage());
         }

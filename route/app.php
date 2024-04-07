@@ -14,7 +14,7 @@ use think\facade\Route;
 Route::group('user', function () {
     Route::get('get/:id', 'user/get');
     Route::get('get', 'user/getAll');
-})->middleware('auth', 'admin');
+})->middleware('auth', ['admin'], ['user:read']);
 
 
 Route::group(function() {

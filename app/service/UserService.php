@@ -48,9 +48,12 @@ class UserService {
 
         // 4. 组装 jwt token
 
+
+
         $data = [
             'username' => $user->username,
-            'password' => $user->password
+            'role_id' => $user->role_id
+            // 'password' => $user->password
         ];
 
         $jwt_token = JWTUtils::encode($data);
